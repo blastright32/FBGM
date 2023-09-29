@@ -1,0 +1,57 @@
+var players = await bbgm.idb.cache.players.getAll();
+for (const p of players) {
+ if (p.tid === bbgm.PLAYER.UNDRAFTED) {
+ const ratings = p.ratings.at(-1);
+  if (p.ratings.at(-1).pos === "QB") {
+   ratings.thv = bbgm.player.limitRating(ratings.thv + 5);
+   ratings.thp = bbgm.player.limitRating(ratings.thp + 5);
+   ratings.tha = bbgm.player.limitRating(ratings.tha + 5);
+   ratings.spd = bbgm.player.limitRating(ratings.spd + 2);
+   ratings.elu = bbgm.player.limitRating(ratings.elu + 5);
+  }
+  // else if (p.ratings.at(-1).pos === "RB") {
+  //  ratings.elu = bbgm.player.limitRating(ratings.elu + 2);
+  //  ratings.hnd = bbgm.player.limitRating(ratings.hnd + 2);
+  //  ratings.rtr = bbgm.player.limitRating(ratings.rtr + 2);
+  // }
+  else if (p.ratings.at(-1).pos === "WR") {
+   ratings.hnd = bbgm.player.limitRating(ratings.hnd - 10);
+   ratings.rtr = bbgm.player.limitRating(ratings.rtr - 10);
+  }
+  else if (p.ratings.at(-1).pos === "TE") {
+   ratings.rtr = bbgm.player.limitRating(ratings.rtr + 7);
+   ratings.hnd = bbgm.player.limitRating(ratings.hnd + 7);
+   ratings.rbk = bbgm.player.limitRating(ratings.rbk + 4);
+   ratings.pbk = bbgm.player.limitRating(ratings.pbk + 4);
+  }
+  else if (p.ratings.at(-1).pos === "OL") {
+   ratings.rbk = bbgm.player.limitRating(ratings.rbk - 3);
+   ratings.pbk = bbgm.player.limitRating(ratings.pbk - 3);
+  }
+  else if (p.ratings.at(-1).pos === "DL") {
+   ratings.rns = bbgm.player.limitRating(ratings.rns - 2);
+   ratings.prs = bbgm.player.limitRating(ratings.prs - 2);
+  }
+  else if (p.ratings.at(-1).pos === "LB") {
+   ratings.tck = bbgm.player.limitRating(ratings.tck + 2);
+  }
+  else if (p.ratings.at(-1).pos === "CB") {
+   ratings.pcv = bbgm.player.limitRating(ratings.pcv - 5);
+  }
+  else if (p.ratings.at(-1).pos === "S") {
+   ratings.pcv = bbgm.player.limitRating(ratings.pcv + 3);
+   ratings.tck = bbgm.player.limitRating(ratings.tck + 3);
+  }
+  else if (p.ratings.at(-1).pos === "K") {
+   ratings.kpw = bbgm.player.limitRating(ratings.kpw + 3);
+   ratings.kac = bbgm.player.limitRating(ratings.kac + 3);
+  }
+  else if (p.ratings.at(-1).pos === "P") {
+   ratings.ppw = bbgm.player.limitRating(ratings.ppw - 2);
+   ratings.pac = bbgm.player.limitRating(ratings.pac - 2);
+  }
+  await bbgm.player.develop(p, 0);
+  await bbgm.player.updateValues(p);
+  await bbgm.idb.cache.players.put(p);
+ }
+}
